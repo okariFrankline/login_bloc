@@ -1,5 +1,7 @@
 // import flutter
 import "package:flutter/material.dart";
+// import bloc
+import "../blocs/bloc.dart";
 
 // login screen
 class LoginScreen extends StatelessWidget {
@@ -38,38 +40,74 @@ class LoginScreen extends StatelessWidget {
   }
 
   // function for showing the email field
-  TextField emailField() {
-    return TextField(
-      // decoration
-      decoration: InputDecoration(
-        // set the label
-        labelText: 'Email Address',
-        // set the hin text
-        hintText: 'you@example.com',
-        // set the email
-        icon: Icon(Icons.email),
-      ),
-      // keyboard type
-      keyboardType: TextInputType.emailAddress,
+  // in order to start listening for changes about the input from the text field,
+  // the text field has to be wrapped in a StreamBuilder widget, which will be responsible
+  // for handling the wiring between the text field widget and the the bloc class
+  // The stream class receives two named parameted:
+  // 1. stream => the strem for which the field will belistening for
+  // 2. builder => function that recieves a context and the snapshot
+  // the snapshot stores any of the data received by the stream, => if an error did not
+  // occur, the data will be found in the data property of the snapshot
+  // however, if the error occured, the error will be found in the error property of the snapshot
+
+  // function for returing the streambuilder
+  StreamBuilder emailField() {
+    // return a stream builder
+    return StreamBuilder(
+      // stream listeining to
+      stream: bloc.email,
+      // builder function
+      builder: (context, snapshot) {
+        // return the text field for the email
+        return TextField(
+          // keyboardType
+          keyboardType: TextInputType.emailAddress,
+          // onchanged
+          onChanged: bloc.changeEmail,
+          // set teh decoration
+          decoration: InputDecoration(
+            // lable
+            labelText: 'Email Address',
+            // hint text
+            hintText: 'you@example.com',
+            // icon
+            icon: Icon(Icons.email),
+            // error text
+            errorText: snapshot.error,
+          ),
+        );
+      },
     );
   }
 
   // function for showing the password field
-  TextField passwordField() {
-    // return a password field
-    return TextField(
-      // decoration
-      decoration: InputDecoration(
-        // label
-        labelText: 'Password',
-        // hint text
-        hintText: "password",
-        // icon
-        icon: Icon(Icons.visibility_off),
-      ),
-      // hide the user input
-      obscureText: true,
-    );
+  StreamBuilder passwordField() {
+    // return a stream builder for the password
+    return StreamBuilder(
+        // set the stream
+        stream: bloc.password,
+        // builder function
+        builder: (context, snapshot) {
+          // return a textfield responsible for handling the password
+          return TextField(
+            // obscure the text
+            obscureText: true,
+            // onchanged
+            onChanged: bloc.changePassword,
+            // decoration
+            decoration: InputDecoration(
+                // label
+                labelText: 'Password',
+                // hint text
+                hintText: 'Password',
+                // iccon
+                icon: Icon(
+                  Icons.visibility_off,
+                ),
+                // error text
+                errorText: snapshot.error),
+          );
+        });
   }
 
   // function for showing the submit function

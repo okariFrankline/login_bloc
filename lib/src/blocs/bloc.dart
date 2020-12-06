@@ -37,3 +37,8 @@ class Bloc extends Object with ValidatorMixin {
     _passwordController.close();
   }
 }
+
+// export an instance of the bloc
+// any time this file will be imported, the importing file will get access to the
+// this instance
+final bloc = Bloc();
