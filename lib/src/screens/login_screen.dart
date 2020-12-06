@@ -2,31 +2,35 @@
 import "package:flutter/material.dart";
 // import bloc
 import "../blocs/bloc.dart";
+// import the provider
+import "../blocs/provider.dart";
 
 // login screen
 class LoginScreen extends StatelessWidget {
   // build function
   @override
   Widget build(BuildContext context) {
+    // create a new instance of bloc from the provider
+    final bloc = Provider.of(context);
     // return the login widget
     return Container(
       // set the margin
       margin: EdgeInsets.all(20.0),
       // child
-      child: buildForm(),
+      child: buildForm(bloc),
     );
   }
 
   // function for buildong the form
-  Widget buildForm() {
+  Widget buildForm(Bloc bloc) {
     // return form
     return Column(
       // children
       children: <Widget>[
         // email field
-        emailField(),
+        emailField(bloc),
         // password field
-        passwordField(),
+        passwordField(bloc),
         // set a padding
         Padding(
           padding: EdgeInsets.only(
@@ -51,7 +55,7 @@ class LoginScreen extends StatelessWidget {
   // however, if the error occured, the error will be found in the error property of the snapshot
 
   // function for returing the streambuilder
-  StreamBuilder emailField() {
+  StreamBuilder emailField(Bloc bloc) {
     // return a stream builder
     return StreamBuilder(
       // stream listeining to
@@ -81,7 +85,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   // function for showing the password field
-  StreamBuilder passwordField() {
+  StreamBuilder passwordField(Bloc bloc) {
     // return a stream builder for the password
     return StreamBuilder(
         // set the stream
